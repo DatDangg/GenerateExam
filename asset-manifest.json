@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/GenerateExam/static/css/main.98b26eb4.css",
-    "main.js": "/GenerateExam/static/js/main.48ec8157.js",
+    "main.css": "/GenerateExam/static/css/main.e27df818.css",
+    "main.js": "/GenerateExam/static/js/main.67e94204.js",
     "static/js/453.0d5c2914.chunk.js": "/GenerateExam/static/js/453.0d5c2914.chunk.js",
     "static/media/KaTeX_AMS-Regular.ttf": "/GenerateExam/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
     "static/media/KaTeX_Main-Regular.ttf": "/GenerateExam/static/media/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf",
@@ -64,12 +64,15 @@
     "static/media/KaTeX_Size3-Regular.woff": "/GenerateExam/static/media/KaTeX_Size3-Regular.7947224e8a9914fa332b.woff",
     "static/media/KaTeX_Size3-Regular.woff2": "/GenerateExam/static/media/KaTeX_Size3-Regular.e1951519f6f0596f7356.woff2",
     "index.html": "/GenerateExam/index.html",
-    "main.98b26eb4.css.map": "/GenerateExam/static/css/main.98b26eb4.css.map",
-    "main.48ec8157.js.map": "/GenerateExam/static/js/main.48ec8157.js.map",
+    "static/media/text.svg": "/GenerateExam/static/media/text.13b82fd77e27acda3518efbaa9a71c7b.svg",
+    "static/media/boolean.webp": "/GenerateExam/static/media/boolean.20552a78771d19782c36.webp",
+    "static/media/multiple.webp": "/GenerateExam/static/media/multiple.22a678d5823ec82060dd.webp",
+    "main.e27df818.css.map": "/GenerateExam/static/css/main.e27df818.css.map",
+    "main.67e94204.js.map": "/GenerateExam/static/js/main.67e94204.js.map",
     "453.0d5c2914.chunk.js.map": "/GenerateExam/static/js/453.0d5c2914.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.98b26eb4.css",
-    "static/js/main.48ec8157.js"
+    "static/css/main.e27df818.css",
+    "static/js/main.67e94204.js"
   ]
 }
