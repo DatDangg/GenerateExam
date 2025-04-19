@@ -1,320 +1,330 @@
-import React, { useState } from 'react';
-import Latex from './Latex';
+import styles from "./App.module.css";
+import multiple from "./img/multiple.webp";
+import boolean from "./img/boolean.webp";
+import text from "./img/text.svg";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+
+import React, { useState } from "react";
+import QuestionInput from "./QuestionForm/QuestionInput";
+import ExplainInput from "./QuestionForm/ExplainInput";
+import OptionInputList from "./QuestionForm/OptionInputList";
+import AnswerInput from "./QuestionForm/AnswerInput";
+import QuestionPreviewCard from "./QuestionForm/QuestionPreviewCard";
 
 function App() {
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const [questions, setQuestion] = useState([]);
-  const [ques, setQues] = useState('')
-  const [options, setOptions] = useState({})
-  const [answer, setAnswer] = useState({})
-  const [questionType, setQuestionType] = useState('Part_1')
-  const [explain, setExplain] = useState('')
-
-  const handleTitle = (e) => {
-    setTitle(e)
-  }
-
-  const handleChange = (value) => {
-    setQues(value)
-  };
-
-  const handleExplain = (value) => {
-    setExplain(value)
-  }
+  const [ques, setQues] = useState("");
+  const [options, setOptions] = useState({});
+  const [answer, setAnswer] = useState({});
+  const [explanations, setExplanations] = useState({});
+  const [questionType, setQuestionType] = useState("Part_1");
+  const [explain, setExplain] = useState("");
 
   const handleAddQuestion = () => {
-    const question = {
-      type: questionType, question: ques, answer: answer, explain: explain
+    if (ques.trim() === "") {
+      toast.error("Câu hỏi không được để trống", {
+        pauseOnHover: false,
+      });
+      return;
     }
-    if (questionType === 'Part_1' || questionType === 'Part_2') question['options'] = options
+    
+    if (questionType !== "Part_3" && Object.keys(options).length < 4 && Object.keys(explanations).length <4) {
+      toast.error("Bạn cần nhập các lựa chọn", {
+        pauseOnHover: false,
+      });
+      return;
+    }
 
-    setQuestion([...questions, question])
-    setOptions({})
-    setAnswer({})
-    setExplain('')
-    setQues('')
+    if (questionType === "Part_2" && Object.keys(explanations).length < 4) {
+      toast.error("Bạn cần nhập giải thích cho từng phần", {
+        pauseOnHover: false,
+      });
+      return;
+    }
+
+    if (questionType === "Part_2" && Object.keys(answer).length < 4) {
+      toast.error("Bạn cần chọn đáp án cho từng phần", {
+        pauseOnHover: false,
+      });
+      return;
+    }
+
+    if (questionType === "Part_3" && Object.keys(answer).length ===0) {
+      toast.error("Bạn nhập chọn đáp án đúng", {
+        pauseOnHover: false,
+      });
+      return;
+    }
+
+    if (questionType === "Part_1" && Object.keys(answer).length === 0) {
+      toast.error("Bạn cần chọn đáp án đúng", {
+        pauseOnHover: false,
+      });
+      return;
+    }
+    
+    if (questionType !== "Part_2" && explain.trim() === "") {
+      toast.error("Bạn cần nhập giải thích", {
+        pauseOnHover: false,
+      });
+      return;
+    }
+    
+    let newQuestion = {
+      type: questionType,
+      question: ques,
+      explain: explain,
+    };
+
+    if (questionType === "Part_1" || questionType === "Part_2") {
+      const labels = ["A", "B", "C", "D"];
+      newQuestion.choices = labels.map((label) => ({
+        label,
+        text: options[label] || "",
+        correct:
+          questionType === "Part_1"
+            ? answer.answer === label
+            : answer[label] === "true",
+        explain: questionType === "Part_2" ? explanations[label] || "" : "",
+      }));
+    }
+
+    if (questionType === "Part_3") {
+      newQuestion.answer = Object.values(answer).join("");
+    }
+
+    setQuestion([...questions, newQuestion]);
+    setOptions({});
+    setAnswer({});
+    setExplanations({});
+    setExplain("");
+    setQues("");
+    toast("Đã thêm câu hỏi", {
+      autoClose: 2000,
+      className: styles.customToast,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+    });
+    
   };
 
   const handleSaveQuestion = () => {
-    console.log({ title, questions })
-    console.log(answer)
-  }
-
-  const handleDelete = (index) => {
-    const newC = questions.filter((question, idx) => {
-      return idx !== index
-    })
-    setQuestion(newC)
-  }
-
-  const renderMixedText = (input) => {
-    const parts = input.split(/(\$\$.*?\$\$)/g);
-    return parts.map((part, index) => {
-      const match = part.match(/\$\$(.*?)\$\$/);
-      if (match) {
-        return <Latex key={index} tex={match[1]} />;
-      } else {
-        return <span key={index}>{part}</span>;
-      }
+    toast("Đã lưu câu hỏi", {
+      autoClose: 2000,
+      className: styles.customToast,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
     });
   };
 
-  const handleOptionChange = (label, input) => {
-    setOptions(prev => ({ ...prev, [label]: input }))
-  }
+  const handleOptionChange = (label, value) => {
+    setOptions((prev) => ({ ...prev, [label]: value }));
+  };
 
-  const handleAnswer = (input, label = 'answer') => {
-    setAnswer(prev => ({ ...prev, [label]: input }))
-  }
+  const handleAnswer = (value, label = "answer") => {
+    setAnswer((prev) => ({ ...prev, [label]: value }));
+  };
+
+  const handleExplainChange = (label, value) => {
+    setExplanations((prev) => ({ ...prev, [label]: value }));
+  };
 
   const handleDigitAnswer = (input) => {
-    if (input.length > 4) return;
-    const answerArr = input.split('').slice(0, 4);
+    if (input.length > 4 || /^[A-Za-z]$/.test(input)) return;
+    const answerArr = input.split("").slice(0, 4);
     const obj = {};
     answerArr.forEach((char, idx) => {
       obj[idx] = char;
     });
     setAnswer(obj);
   };
-  
+
+  const handleDelete = (index) => {
+    const filtered = questions.filter((_, idx) => idx !== index);
+    setQuestion(filtered);
+  };
+
+  const handleType = (value) => {
+    setQuestionType(value);
+  };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h3>Tạo đề toán</h3>
-      <div style={{ marginBottom: '10px' }}>Tên đề: <input value={title} onChange={(e) => handleTitle(e.target.value)}></input></div>
-      <div>
-        <span style={{ marginRight: '10px' }}>Chọn phần: </span>
-        <select value={questionType} onChange={(e) => setQuestionType(e.target.value)}>
-          <option value="Part_1">Phần 1</option>
-          <option value="Part_2">Phần 2</option>
-          <option value="Part_3">Phần 3</option>
-        </select>
+    <div className={styles.app}>
+      <ToastContainer />
+      <div className={styles.header}>
+        <button onClick={handleAddQuestion} className={styles.add}>Thêm câu hỏi</button>
+        <button onClick={handleSaveQuestion} className={styles.save}>Lưu</button>
       </div>
-      <div style={{ border: '1px solid #ddd', padding: '30px', margin: '30px', borderRadius: '12px', backgroundColor: '#fefefe', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
-        <div style={{ display: 'flex', gap: '40px' }}>
-          <div style={{ width: '50%' }}>
-            <p style={{ fontWeight: '600', marginBottom: '8px' }}>Nhập câu hỏi</p>
-            <input
-              onChange={(e) => handleChange(e.target.value)}
-              value={ques}
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                fontSize: '16px',
-                borderRadius: '8px',
-                border: '1px solid #ccc',
-              }}
-              placeholder='Ex: Giải phương trình $$x^2 + 2x + 1 = 0$$'
-            />
-          </div>
-          <div style={{ width: '50%' }}>
-            <p style={{ fontWeight: '600', marginBottom: '8px' }}>Preview</p>
-            <div
-              style={{
-                width: '100%',
-                minHeight: '50px',
-                padding: '12px 16px',
-                fontSize: '18px',
-                lineHeight: '1.5',
-                backgroundColor: '#fafafa',
-                border: '1px solid #ccc',
-                borderRadius: '8px',
-                boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.05)',
-              }}
-            >
-              {renderMixedText(ques)}
+      <div className="container">
+        <div className={styles.title}>Đề có: <span>{questions.length} câu hỏi</span> </div>
+        <div className={styles.wrapper}>
+          <div className="row">
+            <div className="col-md-1 d-flex justify-content-end">
+              <div className={styles.titleCount}>1</div>
             </div>
-          </div>
-        </div>
-
-        {(questionType === 'Part_2' || questionType === 'Part_1') && (
-          <div style={{ marginTop: '30px' }}>
-            <p style={{ fontWeight: '600' }}>Options</p>
-            {['A', 'B', 'C', 'D'].map((label) => (
-              <div
-                key={label}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  marginBottom: '10px',
-                }}
-              >
-                <span style={{ width: '20px', fontWeight: 'bold' }}>{label}</span>
-                <input
-                  value={options[label] || ''}
-                  onChange={(e) => handleOptionChange(label, e.target.value)}
-                  style={{
-                    flex: '1',
-                    height: '36px',
-                    padding: '6px 12px',
-                    borderRadius: '6px',
-                    border: '1px solid #ccc',
-                  }}
-                />
-                <div
-                  style={{
-                    flex: '2',
-                    padding: '8px 12px',
-                    minHeight: '36px',
-                    backgroundColor: '#f9f9f9',
-                    fontSize: '16px',
-                    border: '1px solid #ddd',
-                    borderRadius: '6px',
-                    boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.05)',
-                  }}
-                >
-                  {options[label] && renderMixedText(options[label])}
+            <div className="col-md-11 mb-3">
+              <div>
+                <div className={styles.titleName}>Lựa chọn loại đề</div>
+                <div className={styles.titleDesc}>Chọn loại đề tương ứng với phần bạn làm</div>
+              </div>
+              <div className={styles.partContent}>
+                <div className={styles.choice}>
+                  <div
+                    className={
+                      questionType === "Part_1"
+                        ? `${styles.active} ${styles.choiceItem}`
+                        : `${styles.choiceItem}`
+                    }
+                    onClick={() => handleType("Part_1")}
+                  >
+                    <img src={multiple} className={styles.choiceImg}></img>
+                    <span className={styles.choiceName}>Chọn đáp án</span>
+                  </div>
+                  <div
+                    className={
+                      questionType === "Part_2"
+                        ? `${styles.active} ${styles.choiceItem}`
+                        : `${styles.choiceItem}`
+                    }
+                    onClick={() => handleType("Part_2")}
+                  >
+                    <img src={boolean} className={styles.choiceImg}></img>
+                    <span className={styles.choiceName}>Đúng sai</span>
+                  </div>
+                  <div
+                    className={
+                      questionType === "Part_3"
+                        ? `${styles.active} ${styles.choiceItem}`
+                        : `${styles.choiceItem}`
+                    }
+                    onClick={() => handleType("Part_3")}
+                  >
+                    <img src={text}></img>
+                    <span className={styles.choiceName}>Nhập câu trả lời</span>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-
-        <div style={{ marginTop: '30px' }}>
-          <p style={{ fontWeight: '600' }}>Answer</p>
-          {questionType === 'Part_2' &&
-            ['A', 'B', 'C', 'D'].map((label) => (
-              <div key={label} style={{ marginBottom: '10px' }}>
-                <span style={{ marginRight: '20px' }}>{label}</span>
-                <input
-                  value={answer[label] || ''}
-                  onChange={(e) => handleAnswer(e.target.value, label)}
-                  style={{ padding: '6px 12px', borderRadius: '6px', border: '1px solid #ccc' }}
-                />
-              </div>
-            ))}
-          {(questionType === 'Part_1' || questionType === 'Part_3') && (
-            <input
-              value={answer.answer || ''}
-              onChange={(e) =>
-                questionType === 'Part_3' ? handleDigitAnswer(e.target.value) : handleAnswer(e.target.value)
-              }
-              style={{ padding: '8px 14px', borderRadius: '6px', border: '1px solid #ccc' }}
-            />
-          )}
-        </div>
-
-        <div style={{ marginTop: '30px' }}>
-          <div style={{ display: 'flex', gap: '40px' }}>
-            <div style={{ width: '50%' }}>
-              <p style={{ fontWeight: '600' }}>Explain</p>
-              <input
-                onChange={(e) => handleExplain(e.target.value)}
-                value={explain}
-                style={{
-                  width: '100%',
-                  padding: '12px 16px',
-                  fontSize: '16px',
-                  borderRadius: '8px',
-                  border: '1px solid #ccc',
-                }}
-                placeholder='Write explanation for the answer'
-              />
             </div>
-            <div style={{ width: '50%' }}>
-              <p style={{ fontWeight: '600' }}>Preview</p>
-              <div
-                style={{
-                  width: '100%',
-                  minHeight: '50px',
-                  padding: '12px 16px',
-                  fontSize: '18px',
-                  lineHeight: '1.5',
-                  backgroundColor: '#fafafa',
-                  border: '1px solid #ccc',
-                  borderRadius: '8px',
-                  boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.05)',
-                }}
-              >
-                {renderMixedText(explain)}
+          </div>
+          <div className="row">
+            <div className="col-md-1 d-flex justify-content-end">
+              <div className={styles.titleCount}>2</div>
+            </div>
+            <div className="col-md-11 mb-3">
+              <div>
+                <div className={styles.titleName}>Nhập câu hỏi</div>
+                <div className={styles.titleDesc}>
+                  Chỉ viết câu hỏi ở đây, không viết câu trả lời
+                </div>
+              </div>
+              <div className={styles.partContent}>
+                <div className={styles.questionInput}>
+                  <QuestionInput ques={ques} onChange={setQues} />
+                </div>
+              </div>
+            </div>
+          </div>
+          {(questionType === "Part_1" || questionType === "Part_2") && (
+            <div className="row">
+              <div className="col-md-1 d-flex justify-content-end">
+                <div className={styles.titleCount}>3</div>
+              </div>
+              <div className="col-md-11 mb-3">
+                <div>
+                  <div className={styles.titleName}>Nhập lựa chọn</div>
+                  <div className={styles.titleDesc}>
+                    Nhập các lựa chọn tương ứng cho câu hỏi
+                  </div>
+                </div>
+                <div className={styles.partContent}>
+                  <OptionInputList
+                    type={questionType}
+                    options={options}
+                    answer={answer}
+                    onOptionChange={handleOptionChange}
+                    onAnswerChange={handleAnswer}
+                    explanations={explanations}
+                    onExplainChange={handleExplainChange}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+          {questionType === "Part_3" && (
+            <div className="row">
+              <div className="col-md-1 d-flex justify-content-end">
+                <div className={styles.titleCount}>3</div>
+              </div>
+              <div className="col-md-11 mb-3">
+                <div>
+                  <div className={styles.titleName}>Nhập đáp án</div>
+                  <div className={styles.titleDesc}>
+                    Đáp án chỉ có 4 ký tự gồm số 0-9 | dấu , | dấu -
+                  </div>
+                </div>
+                <div className={styles.partContent}>
+                  <AnswerInput
+                    type={questionType}
+                    answer={answer}
+                    onDigitChange={handleDigitAnswer}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+          {(questionType === "Part_1" || questionType === "Part_3") && (
+            <div className="row">
+              <div className="col-md-1 d-flex justify-content-end">
+                <div className={styles.titleCount}>4</div>
+              </div>
+              <div className="col-md-11 mb-3">
+                <div>
+                  <div className={styles.titleName}>Nhập giải thích</div>
+                  <div className={styles.titleDesc}>
+                    Viết giải thích cho đáp án trên
+                  </div>
+                </div>
+                <div className={styles.partContent}>
+                  <div className={styles.explain}>
+                    <ExplainInput explain={explain} onChange={setExplain} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="row">
+            <div className="col-md-1 d-flex justify-content-end">
+              <div className={styles.titleCount}>4</div>
+            </div>
+            <div className="col-md-11 mb-3">
+              <div>
+                <div className={styles.titleName}>Xem lại câu hỏi</div>
+                <div className={styles.titleDesc}>
+                  Xem lại câu hỏi bạn vừa mới nhập
+                </div>
+              </div>
+              <div className={styles.partContent}>
+
+                {questions.length > 0 && (
+                  <QuestionPreviewCard
+                    key={questions.length - 1}
+                    index={questions.length - 1}
+                    question={questions[questions.length - 1]}
+                    onDelete={() => handleDelete(questions.length - 1)}
+                  />
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <button onClick={() => handleAddQuestion()} style={{ marginRight: '50px' }}>Add</button>
-      <button onClick={() => handleSaveQuestion()}>Save</button>
-      {questions.map((question, index) => (
-        <div
-          key={index}
-          style={{
-            border: '1px solid #ddd',
-            borderRadius: '12px',
-            padding: '16px',
-            margin: '20px 0',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
-            backgroundColor: '#fff',
-          }}
-        >
-          <p style={{ fontWeight: 'bold', marginBottom: '8px' }}>Câu {index + 1}:</p>
-
-          <div style={{ marginBottom: '12px' }}>
-            <span style={{ fontWeight: '500' }}>
-              Câu hỏi: {renderMixedText(question.question)}
-            </span>
-          </div>
-
-          {(question.type === 'Part_1' || question.type === 'Part_2') && (
-            <div style={{ margin: '12px 0' }}>
-              {['A', 'B', 'C', 'D'].map((label) => (
-                <div
-                  key={label}
-                  style={{ display: 'flex', alignItems: 'center', marginBottom: '6px' }}
-                >
-                  <p style={{ width: '24px', margin: 0, fontWeight: 'bold' }}>{label}.</p>
-                  <p style={{ margin: 0 }}>{question.options[label]}</p>
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div style={{ fontWeight: 'bold', marginTop: '16px', marginBottom: '4px' }}>Đáp án:</div>
-          {question.type === 'Part_1' && (
-            <p style={{ marginLeft: '10px', marginBottom: '12px' }}>{question.answer.answer}</p>
-          )}
-          {question.type === 'Part_2' && (
-            <div style={{ marginLeft: '10px', marginBottom: '12px' }}>
-              {['A', 'B', 'C', 'D'].map((label) => (
-                <div
-                  key={label}
-                  style={{ display: 'flex', alignItems: 'center', marginBottom: '6px' }}
-                >
-                  <p style={{ width: '24px', margin: 0, fontWeight: 'bold' }}>{label}.</p>
-                  <p style={{ margin: 0 }}>{question.answer[label]}</p>
-                </div>
-              ))}
-            </div>
-          )}
-          {question.type === 'Part_3' && (
-            <p style={{ marginLeft: '10px', marginBottom: '12px' }}>
-              {Object.values(question.answer).join('')}
-            </p>
-          )}
-
-          <div style={{ marginBottom: '12px' }}>
-            <span style={{ fontStyle: 'italic' }}>
-              Giải thích: {renderMixedText(question.explain)}
-            </span>
-          </div>
-
-          <button
-            onClick={() => handleDelete(index)}
-            style={{
-              padding: '6px 12px',
-              backgroundColor: '#f44336',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-            }}
-          >
-            Xoá
-          </button>
-        </div>
-      ))}
-
     </div>
   );
 }

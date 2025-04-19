@@ -1,0 +1,126 @@
+.app {
+    /* margin-top: 50px; */
+}
+
+.customToast {
+    color: black !important;
+}
+
+
+.header {
+    background-color: rgb(42, 41, 41);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    display: flex;
+    justify-content:flex-end;
+    padding: 8px;
+}
+
+.add {
+    border-radius: 5px;
+    color: white;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    border: none;
+    margin-right: 10px;
+    background-color: #525252;
+}
+
+.save {
+    border-radius: 5px;
+    color: white;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    border: none;
+    background-color: red;
+}
+
+.title {
+    margin: 72px 0 12px 0;
+    font-weight: bold;
+}
+
+.wrapper {
+    border: 1px solid black;
+    padding: 24px 24px 24px 0;
+}
+
+.titleCount {
+    background-color: black;
+    width: 24px;
+    height: 24px;
+    color: white;
+    text-align: center;
+    border-radius: 50%;
+    font-weight: 600;
+}
+
+.titleName {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+    padding-bottom: 7px;
+}
+
+.titleDesc {
+    font-size: 14px;
+    color: #6A7680;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #dce1e5;
+}
+
+.choice {
+    display: flex;
+    margin: 0 -12px;
+}
+
+.partContent {
+    margin: 24px 0;
+}
+
+.choiceItem {
+    display: flex;
+    flex-direction: column;
+    width: 121px;
+    height: 104px;
+    padding: 20px 14px;
+    margin: 0 12px;
+    border: 1px solid #dce1e5;
+    background-color: #f6f6f8;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.choiceItem.active {
+    border: 1px solid black;
+    background-color: white;
+}
+
+.choiceImg {
+    display: block;
+    width: 35px;
+    margin: auto 0;
+}
+
+.choiceName {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.questionInput {
+    display: flex;
+    gap: 40px;
+}
+
+.explain {
+    display: flex;
+    gap: 40px;
+    margin-top: 30px;
+}

@@ -1,0 +1,69 @@
+.preview {
+    padding: 16px;
+    margin: 20px 0;
+}
+
+.question {
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.questionChoice {
+    margin: 12px 0;
+}
+
+.questionChoiceItem {
+    padding-bottom: 12px;
+}
+
+.answer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.label {
+    width: 24px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.text {
+    margin: 0;
+    flex: 1;
+}
+
+.choice {
+    font-weight: 800;
+    margin: 0;
+}
+
+.correct {
+    color: rgb(255, 11, 11);
+}
+
+.explainOption {
+    font-style: italic;
+    color: #555;
+    margin-left: 28px;
+    margin-top: 4px;
+}
+
+.answerPart3 {
+    margin-top: 12px;
+}
+
+.explain {
+    margin-top: 12px;
+    font-style: italic;
+}
+
+.delete {
+    margin-top: 12px;
+    padding: 6px 12px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
