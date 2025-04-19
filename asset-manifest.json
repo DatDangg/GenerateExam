@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/GenerateExam/static/css/main.e27df818.css",
+    "main.css": "/GenerateExam/static/css/main.998e2fab.css",
     "main.js": "/GenerateExam/static/js/main.67e94204.js",
     "static/js/453.0d5c2914.chunk.js": "/GenerateExam/static/js/453.0d5c2914.chunk.js",
     "static/media/KaTeX_AMS-Regular.ttf": "/GenerateExam/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
@@ -67,12 +67,12 @@
     "static/media/text.svg": "/GenerateExam/static/media/text.13b82fd77e27acda3518efbaa9a71c7b.svg",
     "static/media/boolean.webp": "/GenerateExam/static/media/boolean.20552a78771d19782c36.webp",
     "static/media/multiple.webp": "/GenerateExam/static/media/multiple.22a678d5823ec82060dd.webp",
-    "main.e27df818.css.map": "/GenerateExam/static/css/main.e27df818.css.map",
+    "main.998e2fab.css.map": "/GenerateExam/static/css/main.998e2fab.css.map",
     "main.67e94204.js.map": "/GenerateExam/static/js/main.67e94204.js.map",
     "453.0d5c2914.chunk.js.map": "/GenerateExam/static/js/453.0d5c2914.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e27df818.css",
+    "static/css/main.998e2fab.css",
     "static/js/main.67e94204.js"
   ]
 }
